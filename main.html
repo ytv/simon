@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html ng-app="App">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <link rel="stylesheet" href="public/css/app.css">
+    <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="public/js/app.js"></script>
+    <script src="public/js/app.Ctrl.js"></script>
+    <script src="public/js/app.Service.js"></script>
+<head>
+</head>
+<body ng-controller="App.Ctrl">
+    <div class="container">
+        <div class="outer-circle">
+            <button class="tl qtr-circle"
+                    ng-style="green"
+                    ng-mousedown="lightUp(1)"
+                    ng-mouseup="turnOff(1); passUserInput(1)">
+            </button>
+            <button class="tr qtr-circle"
+                    ng-style="red"
+                    ng-mousedown="lightUp(2)"
+                    ng-mouseup="turnOff(2); passUserInput(2)">
+                </button>
+            <button class="bl qtr-circle"
+                    ng-style="yellow"
+                    ng-mousedown="lightUp(3)"
+                    ng-mouseup="turnOff(3); passUserInput(3)">
+            </button>
+            <button class="br qtr-circle"
+                    ng-style="blue"
+                    ng-mousedown="lightUp(4)"
+                    ng-mouseup="turnOff(4); passUserInput(4)">
+            </button>
+            <div class="middle-circle">
+                <div class="inner-circle">
+                <div class="inner-circle__label"><b>simon</b></div>
+
+                <div class="row1">
+                    <div class="row1__screen">
+                        <div class="row1__screen__txt">{{ screen }}</div>
+                    </div>
+                    <div class="row1__btn-border btn-start-div">
+                        <button type="button" class="btn__start" ng-style="btn__start" ng-click="init()"></button>
+                    </div>
+                    <div class="row1__btn-border btn-strict-div">
+                        <button type="button" class="btn__strict" ng-style="btn__strict" ng-click="toggleStrict()"></button>
+                    </div>
+                </div>
+
+                <div class="row2 sm-label">
+                    <span class="row2__label__round">ROUND</span>
+                    <span class="row2__label__start">START</span>
+                    <span class="row2__label__strict">STRICT</span>
+                </div>
+
+                <div class="row3 sm-label">
+                    <span class="row3__label__off">OFF</span>
+                    <span class="row3__btn-border">
+                        <button class="btn__off" ng-style="btn__off" ng-click="toggleOnOff()"></button>
+                        <button class="btn__on" ng-style="btn__on" ng-click="toggleOnOff()"></button>
+                    </span>
+                    <span class="row3__label__on">ON</span>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
