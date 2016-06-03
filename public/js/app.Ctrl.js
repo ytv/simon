@@ -1,170 +1,192 @@
-App.controller('App.Ctrl', function($scope, $timeout, AppService) {
-    const colorCode = {1:"green", 2: "red", 3: "yellow", 4: "blue"};
-    const speed = 500; // in milliseconds
-    var on = false;
-    var lock = false;
-    var strict = false;
-    var colorSequence = [];
-    var count = 0;
-    var round = 1;
-    var turnOffTimer;
-    var recursiveTimer;
-    var timer;
-    var sound = {1:{}, 2:{}, 3: {}, 4: {}};
-    var buzzer;
-    var win;
+/*  Rules of the Game:
+
+    Click the red "start" button to begin.  The game will play a sequence of colors and sounds
+    with which the user needs to repeat in the exact same order (by clicking on the right colors).
+    Round one starts with only 1 color in the sequence.  Each time the user     successfully repeats
+    the sequence, the game will move on to the next round where the last sequence will start all
+    over with an additional color/sound added at the end.
+
+    If the user is in strict mode (by clicking on the yellow button), clicking on the wrong color
+    when attempting to repeat a sequence will reset the game back to round 1.  If not in strict mode,
+    an incorrect attempt will only reset the game to the beginning of the current round.  Clicking the start
+    button will not only reset the game to round 1 but also generate a whole new sequence of colors.
+
+    The user wins after successfully repeating the sequence at round 20. */
+
+App.controller('AppCtrl', ['$scope', '$timeout', 'SequenceService', 'AudioService', function($scope, $timeout, SequenceService, AudioService) {
+
+    // *** initialize variables ***
+
+    const COLOR_CODE = {1:"green", 2: "red", 3: "yellow", 4: "blue"};
+    const SPEED = 500; // in milliseconds
+    let lock = true,
+        colorSequence = [],
+        count = 0,
+        round = 1,
+        turnOffTimer,
+        recursiveTimer,
+        timer,
+        display = {wrong: '!!', go: 'Go!'}
+        sound = {buzzer: 'buzzer', win: 'win'};
+
+    // *** initialize scope display variables ***
+
+    $scope.on = true;
+    $scope.strict = false;
+    $scope.green = false;
+    $scope.red = false;
+    $scope.yellow = false;
+    $scope.blue = false;
+
+    // *** initialize scope functions ***
 
     $scope.init = function() {
-        if(on === true) {
-            setUpSoundEffects();
-            reset(true);
-        }
+        AudioService.setUpSoundEffects();
+        reset(true);
     };
 
     $scope.toggleOnOff = function() {
-        if(on === true) {
-            on = false;
-            $scope.btn__off = {"background-color": "#8A96B6"};
-            $scope.btn__on = {"background-color": "#333"};
+        if($scope.on === true) {
             cancelAllTimers();
             turnOffAllLights();
-            $scope.screen = "";
+            $scope.textDisplay = "";
         }
-        else {
-            on = true;
-            $scope.btn__off = {"background-color": "#333"};
-            $scope.btn__on = {"background-color": "#8A96B6"};
+        $scope.on = !$scope.on;
+    };
+
+    // *** initialize non-scope functions ***
+
+    // resets everything and generates a new sequence
+    reset = function(restart) {
+        SequenceService.resetSequence();
+        colorSequence = SequenceService.generateSequence(SequenceService.getSequenceLength());
+        resetToRoundOne(restart);
+    };
+
+    // resets back to round 1
+    resetToRoundOne = function(restart) {
+        cancelAllTimers();
+        turnOffAllLights();
+        $scope.textDisplay = display.go;
+        round = 1;
+        resetRound(restart);
+    };
+
+    // resets the current round
+    resetRound = function(restart) {
+        count = 0;
+        lock = false;
+        SequenceService.resetUserInput();
+        if(restart) {
+            timer = $timeout(function() {
+                $scope.textDisplay = round;
+                playSequence(round);
+            }, SPEED*3);
         }
     };
 
-    $scope.toggleStrict = function() {
-        if(strict === false) {
-            strict = true;
-            $scope.btn__strict = {"box-shadow":"inset 0 0 8px #666"};
-        }
-        else {
-            strict = false;
-            $scope.btn__strict = {"box-shadow":"inset 0 0 1px #666"}
-        }
-
-    };
-
-    startRound = function(round) {
-        $scope.screen = round;
-        var color = colorSequence[count];
-        playSound(color.code);
-        // Light up the color by changing its CSS background-color value
-        $scope[colorCode[color.code]] = color.lightColorObj;
+    /*  Uses the "count" variable to recursively iterate through the sequence for
+        each round.  Iteration ends when "count" increments to "round".
+        Timers are used to time "turning on and off" the lights of each color */
+    playSequence = function(round) {
+        let colorCode = colorSequence[count];
+        AudioService.playSound(colorCode);
+        $scope.lightUp(colorCode);
         turnOffTimer = $timeout(function() {
-            // darken the color by changing back its CSS background-color value
-            $scope[colorCode[color.code]] = color.darkColorObj;
+            turnOffAllLights();
             recursiveTimer = $timeout(function(){
                 count++;
                 if(count < round)
-                    startRound(round);
-            }, speed/2);
-        }, speed);
+                    playSequence(round);
+            }, SPEED/2);
+        }, SPEED);
     };
 
-     $scope.passUserInput = function(n) {
-         if(on === true && lock === false) {
-             cancelAllTimers();
-             turnOffAllLights();
-             var result = AppService.addUserInput(n, round);
-             switch(result) {
-                 // user input is incorrect
-                 case 0:
-                    wrongInput();
-                    break;
+    $scope.passUserInput = function(n) {
+        if($scope.on === true && lock === false) {
+            cancelAllTimers();
+            turnOffAllLights();
+            let result = SequenceService.addUserInput(n, round);
+            switch(result) {
                 // correct input and round not yet completed
-                 case 1:
+                case SequenceService.STATE.NEXT_INPUT:
                     break;
-                 // correct input and round is completed
-                 case 2:
+                // correct input and round is completed
+                case SequenceService.STATE.NEXT_ROUND:
                     round++;
                     resetRound(true);
                     break;
-                  // correct input and sequence is completed
-                  case 3:
-                    win.play();
+                // correct input and sequence is completed
+                case SequenceService.STATE.WIN:
+                    AudioService.playSound(sound.win);
                     toggleLights(0, 5);
+                    lock = true;
+                    $scope.textDisplay = "";
+                    break;
+                // user input is incorrect
+                default:
+                    wrongInput();
                     break;
              }
          }
     };
 
+    // Lights up the color that the user clicks
     $scope.lightUp = function(n) {
-        if(on === true && lock === false) {
-            $scope[colorCode[n]] = AppService.getLightColorObj(n);
-            playSound(n);
+        if($scope.on === true && lock === false) {
+            AudioService.playSound(n);
+            switch (n) {
+                case 1:
+                    $scope.green = true;
+                    break;
+                case 2:
+                    $scope.red = true;
+                    break;
+                case 3:
+                    $scope.yellow = true;
+                    break;
+                case 4:
+                    $scope.blue = true;
+                    break;
+                default:
+                    break;
+            }
         }
     };
 
     turnOnAllLights = function() {
-        $scope[colorCode[1]] = AppService.getLightColorObj(1);
-        $scope[colorCode[2]] = AppService.getLightColorObj(2);
-        $scope[colorCode[3]] = AppService.getLightColorObj(3);
-        $scope[colorCode[4]] = AppService.getLightColorObj(4);
+        $scope.green = true;
+        $scope.red = true;
+        $scope.yellow = true;
+        $scope.blue = true;
     };
 
     turnOffAllLights = function() {
-        $scope[colorCode[1]] = AppService.getDarkColorObj(1);
-        $scope[colorCode[2]] = AppService.getDarkColorObj(2);
-        $scope[colorCode[3]] = AppService.getDarkColorObj(3);
-        $scope[colorCode[4]] = AppService.getDarkColorObj(4);
-    };
-
-    // resets everything and generates a new sequence
-    reset = function(restart) {
-        AppService.resetSequence();
-        AppService.generateSequence(AppService.getSequenceLength());
-        // initialize sequence of color objects
-        colorSequence = AppService.getColorSequence();
-        resetToRound1(restart);
-    };
-
-    // resets back to round 1
-    resetToRound1 = function(restart) {
-        cancelAllTimers();
-        turnOffAllLights();
-        $scope.screen = "Go!";
-        round = 1;
-        resetRound(restart);
-    };
-
-    //resets the current round
-    resetRound = function(restart) {
-        count = 0;
-        AppService.resetUserInput();
-        if(restart) {
-            var timer = $timeout(function() {
-                startRound(round);
-            }, speed*3);
-        }
+        $scope.green = false;
+        $scope.red = false;
+        $scope.yellow = false;
+        $scope.blue = false;
     };
 
     wrongInput = function() {
-        buzzer.play();
-        $scope.screen = '!!';
-        lock = true;
+        AudioService.playSound(sound.buzzer);
+        $scope.textDisplay = display.wrong;
         toggleLights(0, 3);
-        lock = false;
-        var timer = $timeout(function() {
-            if(strict === false)
-                resetRound(true);
-            else resetToRound1(true);
-        }, 1500);
+        ($scope.strict === false) ? resetRound(true) : resetToRoundOne(true);
     };
 
+    // Causes all the lights to repeated flash on and off in unison n times
     toggleLights = function(i, n) {
         if(i < n) {
+            lock = true;
             turnOnAllLights();
-            var timer1 = $timeout(function() {
+            let timer = $timeout(function() {
                 turnOffAllLights();
-                var timer2 = $timeout(function() {
+                let timer = $timeout(function() {
                     toggleLights(i+1, n);
                 }, 200);
             }, 200);
+            lock = false;
         }
     };
 
@@ -173,29 +195,4 @@ App.controller('App.Ctrl', function($scope, $timeout, AppService) {
         $timeout.cancel(recursiveTimer);
         $timeout.cancel(timer);
     };
-
-    playSound = function(n) {
-        sound[n].play();
-    };
-
-    setUpSoundEffects = function() {
-        sound[1] = document.createElement('audio');
-        sound[2] = document.createElement('audio');
-        sound[3] = document.createElement('audio');
-        sound[4] = document.createElement('audio');
-        sound[4] = document.createElement('audio');
-
-        sound[1].setAttribute('src', 'https://s3.amazonaws.com/freecodecamp/simonSound1.mp3');
-        sound[2].setAttribute('src', 'https://s3.amazonaws.com/freecodecamp/simonSound2.mp3');
-        sound[3].setAttribute('src', 'https://s3.amazonaws.com/freecodecamp/simonSound3.mp3');
-        sound[4].setAttribute('src', 'https://s3.amazonaws.com/freecodecamp/simonSound4.mp3');
-
-        buzzer = document.createElement('audio');
-        win = document.createElement('audio');
-
-        buzzer.setAttribute('src', 'http://www.soundjay.com/misc/sounds/fail-buzzer-02.mp3');
-        win.setAttribute('src', 'http://soundbible.com/grab.php?id=1003&type=mp3');
-
-    };
-
-});
+}]);
