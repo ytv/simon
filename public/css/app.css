@@ -15,9 +15,7 @@ body {
     width: 80%;
 }
 
-/* outer circle */
-
-.outer-circle {
+.content {
     background-color: #222;
     border-radius: 50%;
     box-shadow: 0 0 3px #000;
@@ -44,7 +42,7 @@ button:active, button:focus {
 
 /* quadrants */
 
-.qtr-circle {
+.quadrant {
     box-shadow: 0 0 10px #000,
                 inset 0 0 50px #222;
     height: 42.5%;
@@ -52,7 +50,7 @@ button:active, button:focus {
     width: 42.5%;
 }
 .tl {
-    background-color: green;
+    background-color: #008000;
     border-radius: 100% 0 0 0;
     left: 5%;
     top: 5%;
@@ -76,87 +74,130 @@ button:active, button:focus {
     top: 52.5%;
 }
 
-/* middle circle */
+/* quadrant lights */
 
-.middle-circle {
+.green-light {
+    background-color: #3DF43D;
+}
+.red-light {
+    background-color: #F61616;
+}
+.yellow-light {
+    background-color: #FCFC17;
+}
+.blue-light {
+    background-color: #006EFF;
+}
+/* game-ctrl */
+
+.game-ctrl-border {
+    position:absolute;
+        left: 25%;
+        top: 25%;
     background-color: #222;
     border-radius: 50%;
     box-shadow: 0 0 50px #222;
     height: 50%;
-    position:absolute;
-        top: 25%;
-        left: 25%;
     width: 50%;
 
 }
 
- /* inner circle */
-
-.inner-circle {
+.game-ctrl {
+    position: absolute;
+        left: 6%;
+        top: 6%;
     background-color: #ccc;
     border-radius: 50%;
     box-shadow: inset 0 0 3px #000;
     height: 88%;
-    position: absolute;
-        left: 6%;
-        top: 6%;
     width: 88%;
     z-index: 1;
 }
-.inner-circle * {
+
+.game-ctrl * {
     position: absolute;
 }
 
- /* inner circle labels */
+ /* labels */
 
-.inner-circle__label {
+.title {
     color: #000;
     font: 10vw Impact, sans-serif;
     left: 11%;
     top: 15%;
 }
-.sm-label {
-    color: black;
+.label {
+    color: #000;
     font-size: 1.5vw;
 }
-
-/* inner circle row1 */
-
-.row1 {
-    height: 13%;
-    left: 10%;
-    top: 50%;
-    width: 80%;
+.label-round, .label-start, .label-strict {
+    top: 65%;
 }
-.row1__screen {
+.label-round {
+    left: 20%;
+}
+.label-start {
+    left: 53%;
+}
+.label-strict {
+    left: 73%;
+}
+.label-off, .label-on {
+    top: 78.5%;
+}
+.label-off {
+    left: 24%;
+}
+.label-on {
+    left: 67%;
+}
+
+/* screen */
+
+.screen {
     background-color: #555;
     border-radius: 5px;
     box-shadow: 0 0 2px #000;
-    height: 100%;
-    left: 10%;
-    width: 25%;
+    height: 13%;
+    left: 18%;
+    top: 50%;
+    width: 20%;
 }
-.row1__screen__txt{
+.screen-txt{
     color: #BDBE9B;
     font: 3.8vw Monospace;
     right: 5%;
 }
-.row1__btn-border {
+
+/* button borders */
+
+.btn-border {
     background-color: #222;
-    border-radius: 100%;
     box-shadow: 0 0 2px #000;
-    height: 80%;
+    height: 10.4%;
+}
+.border-start, .border-strict {
     position: absolute;
-        top: 20%;
-    width: 13%;
+        top: 52.6%;
+    border-radius: 100%;
+    width: 10.4%;
 }
-.btn-start-div {
-    left: 55%;
+.border-start {
+    left: 54%;
 }
-.btn-strict-div {
-    left: 80%;
+.border-strict {
+    left: 75%;
 }
-.btn__start, .btn__strict{
+.border-on-off {
+    border-radius: 10%;
+    left: 35%;
+    top: 76%;
+    width: 30%;
+}
+
+/* buttons */
+
+.btn-start, .btn-strict{
     border: none;
     border-radius: 100%;
     box-shadow: inset 0 0 1px #666;
@@ -165,77 +206,35 @@ button:active, button:focus {
     top: 17.5%;
     width: 65% !important;
 }
-.btn__start {
-    background-color: red;
+.btn-start {
+    background-color: #f00;
 }
-.btn__start:active {
+.btn-start:active {
     box-shadow: inset 0 0 8px #666;
 }
-.btn__strict {
-    top: 17%;
-    background-color: yellow;
+.btn-strict {
+    background-color: #ff0;
 }
-
-/* inner circle row2 */
-
-.row2 {
-    top: 65%;
-    height: 5%;
-    left: 10%;
-    width: 80%;
-}
-.row2__label__round {
-    left: 13%;
-}
-.row2__label__start {
-    left: 53%;
-}
-.row2__label__strict {
-    left: 77%;
-}
-
-/* inner circle row3 */
-
-.row3 {
-    height: 10%;
-    left: 27%;
-    top: 75%;
-    width: 50%;
-}
-.row3__btn-border {
-    background-color: black;
-    border-radius: 10%;
-    box-shadow: 0 0 2px #000;
-    height: 100%;
-    left: 20%;
-    width: 60%;
-}
-.row3__btn-border button{
+.btn-off, .btn-on{
     border: none;
     box-shadow: inset 0 0 2px #222;
-    padding: 0;
-    width: 25%;
-}
-.row3__label__off {
-    top: 25%;
-}
-.btn__off{
-    background-color: #8A96B6;
     height: 65% !important;
-    left: 10%;
+    padding: 0;
     top: 15%;
     width: 40% !important;
-}
-.btn__on{
     background-color: #333;
-    height: 70% !important;
-    left: 50%;
-    top: 15%;
-    width: 40% !important;
 }
-.row3__label__on {
-    left: 84%;
-    top: 25%;
+.btn-off{
+    left: 10%;
+}
+.btn-on{
+    left: 50%;
+}
+.btn-grey {
+    background-color: #8A96B6;
+}
+.btn-shadow {
+    box-shadow: inset 0 0 8px #666;
 }
 
 /*----------media----------*/
@@ -244,51 +243,51 @@ button:active, button:focus {
     .container {
         width: 320px;
     }
+    .title {
+        font: 42px Impact, sans-serif;
+    }
 }
 
 @media screen and (max-width: 430px) {
-    /*.container {
-        width: 320px;
-    }*/
-    .inner-circle__label {
-        font: 42px Impact, sans-serif;
-    }
-    .sm-label {
-        font-size: 9px;
-    }
-    .row1__screen__txt{
+    .screen-txt{
         font: 3.8vw Monospace;
         top: 10%;
     }
-    .row2__label__round {
-        left: 9%;
+    .label {
+        font-size: 9px;
     }
-    .row2__label__start {
-        left: 49%;
+    .label-round {
+        left: 18%;
     }
-    .row2__label__strict {
-        left: 76%;
+    .label-start {
+        left: 51%;
     }
-    .row3__label__off{
-        left: -7%;
+    .label-strict {
+        left: 72%;
+    }
+    .label-off {
+        left: 22%;
     }
 }
 
 @media screen and (min-width: 340px) and (max-width: 570px) {
     .container {
-        width: 100%;
         min-width: 320px;
+        width: 100%;
+    }
+    .title {
+        font: 12.5vw Impact, sans-serif;
     }
 }
 
 @media screen and (min-width: 430px) and (max-width: 570px) {
-    .inner-circle__label {
+    .title{
         font: 12.5vw Impact, sans-serif;
     }
-    .sm-label {
-        font-size: 2vw;
+    .label {
+        font-size: 2.2vw;
     }
-    .row1__screen__txt{
+    .screen-txt{
         font-size: 4.5vw;
     }
 }
@@ -298,13 +297,13 @@ button:active, button:focus {
         margin-top: 93px;
         width: 740px;
     }
-    .inner-circle__label {
+    .title{
         font: 95px Impact, sans-serif;
     }
-    .sm-label {
+    .label {
         font-size: 15px;
     }
-    .row1__screen__txt{
+    .screen-txt{
         font-size: 35px;
     }
 }
