@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html ng-app="App">
+<head>
     <meta name="viewport" content="width = device-width, initial-scale = 1">
     <link rel="stylesheet" href="public/css/app.css">
     <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
@@ -7,7 +8,7 @@
     <script src="public/js/app.ctrl.js"></script>
     <script src="public/js/service/sequence.service.js"></script>
     <script src="public/js/service/audio.service.js"></script>
-<head>
+    <title>Simon</title>
 </head>
 <body ng-controller="AppCtrl">
     <div class="container">
@@ -66,5 +67,21 @@
 
         </div>  <!-- content -->
     </div>  <!-- container -->
+    <div class="instructions">
+        Click on the red start button to play!
+    </div>
+    <div class="rules">
+        <b>Rules of the Game:</b>
+        <p>Click the red "start" button to begin.  The game will play a sequence of colors and sounds
+        with which the user needs to repeat in the exact same order (by clicking on the right colors).
+        Round one starts with only 1 color in the sequence.  Each time the user     successfully repeats
+        the sequence, the game will move on to the next round where the last sequence will start all
+        over with an additional color/sound added at the end.</p>
+        <p>If the user is in strict mode (by clicking on the yellow button), clicking on the wrong color
+        when attempting to repeat a sequence will reset the game back to round 1.  If not in strict mode,
+        an incorrect attempt will only reset the game to the beginning of the current round.  Clicking the start
+        button will not only reset the game to round 1 but also generate a whole new sequence of colors.</p>
+        <p>The user wins after successfully repeating the sequence at round 20.</p>
+    </div>
 </body>
 </html>

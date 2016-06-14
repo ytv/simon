@@ -237,6 +237,23 @@ button:active, button:focus {
     box-shadow: inset 0 0 8px #666;
 }
 
+/*instructions*/
+
+.instructions {
+    color: #ff0000;
+    font: 40px Arial;
+    margin: 60px auto 90px auto;
+    text-align: center;
+    width: 80%;
+}
+
+.rules {
+    font: 30px Arial;
+    color: #342356;
+    margin: auto 10%;
+    width: 80%;
+}
+
 /*----------media----------*/
 
 @media screen and (max-width: 340px) {
