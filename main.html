@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html ng-app="App">
+<head>
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <link rel="stylesheet" href="public/css/app.css">
+    <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="public/js/app.module.js"></script>
+    <script src="public/js/app.ctrl.js"></script>
+    <script src="public/js/service/sequence.service.js"></script>
+    <script src="public/js/service/audio.service.js"></script>
+    <title>Simon</title>
+</head>
+<body ng-controller="AppCtrl">
+    <div class="container">
+        <div class="content">
+
+            <button class="tl quadrant ng-class: {'green-light': green}"
+                    ng-mousedown="lightUp(1)"
+                    ng-mouseup="passUserInput(1)">
+            </button>
+            <button class="tr quadrant ng-class: {'red-light': red}"
+                    ng-mousedown="lightUp(2)"
+                    ng-mouseup="passUserInput(2)">
+                </button>
+            <button class="bl quadrant ng-class: {'yellow-light': yellow}"
+                    ng-mousedown="lightUp(3)"
+                    ng-mouseup="passUserInput(3)">
+            </button>
+            <button class="br quadrant ng-class: {'blue-light': blue}"
+                    ng-mousedown="lightUp(4)"
+                    ng-mouseup="passUserInput(4)">
+            </button>
+
+            <div class="game-ctrl-border">
+                <div class="game-ctrl">
+                <div class="title"><b>simon</b></div>
+                    <div class="screen">
+                        <div class="screen-txt">{{ textDisplay }}</div>
+                    </div>
+                    <span class="border-start btn-border">
+                        <button type="button"
+                                class="btn-start"
+                                ng-click="!on || init()">
+                        </button>
+                    </span>
+                    <div class="border-strict btn-border">
+                        <button type="button"
+                                class="btn-strict ng-class:{'btn-shadow': strict}"
+                                ng-click="strict = !strict">
+                        </button>
+                    </div>
+                    <span class="label label-round">ROUND</span>
+                    <span class="label label-start">START</span>
+                    <span class="label label-strict">STRICT</span>
+                    <span class="label label-off">OFF</span>
+                    <span class="border-on-off btn-border">
+                        <button class="btn-off ng-class: {'btn-grey': !on};"
+                                ng-click="toggleOnOff();">
+                        </button>
+                        <button class="btn-on ng-class: {'btn-grey': on};"
+                                ng-click="toggleOnOff()">
+                        </button>
+                    </span>
+                    <span class="label label-on">ON</span>
+                </div>
+            </div>
+
+        </div>  <!-- content -->
+    </div>  <!-- container -->
+    <div class="instructions">
+        Click on the red start button to play!
+    </div>
+    <div class="rules">
+        <b>Rules of the Game:</b>
+        <p>Click the red "start" button to begin.  The game will play a sequence of colors and sounds
+        with which the user needs to repeat in the exact same order (by clicking on the right colors).
+        Round one starts with only 1 color in the sequence.  Each time the user     successfully repeats
+        the sequence, the game will move on to the next round where the last sequence will start all
+        over with an additional color/sound added at the end.</p>
+        <p>If the user is in strict mode (by clicking on the yellow button), clicking on the wrong color
+        when attempting to repeat a sequence will reset the game back to round 1.  If not in strict mode,
+        an incorrect attempt will only reset the game to the beginning of the current round.  Clicking the start
+        button will not only reset the game to round 1 but also generate a whole new sequence of colors.</p>
+        <p>The user wins after successfully repeating the sequence at round 20.</p>
+    </div>
+</body>
+</html>

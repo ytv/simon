@@ -1,0 +1,326 @@
+/* body */
+
+body {
+    background-color: #ccc;
+}
+
+/* container */
+
+.container {
+    position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    margin-top: 10%;
+    padding: 0;
+    width: 80%;
+}
+
+.content {
+    background-color: #222;
+    border-radius: 50%;
+    box-shadow: 0 0 3px #000;
+    padding-top: 100%;
+    width: 100%;
+}
+
+/* buttons */
+
+button {
+    border: none;
+    cursor: pointer;
+}
+button:active, button:focus {
+    outline: none !important;
+    border: none !important;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* quadrants */
+
+.quadrant {
+    box-shadow: 0 0 10px #000,
+                inset 0 0 50px #222;
+    height: 42.5%;
+    position: absolute;
+    width: 42.5%;
+}
+.tl {
+    background-color: #008000;
+    border-radius: 100% 0 0 0;
+    left: 5%;
+    top: 5%;
+}
+.tr {
+    background-color: #C71C1C;
+    border-radius: 0 100% 0 0;
+    left: 52.5%;
+    top: 5%;
+}
+.bl {
+    background-color: #C5C507;
+    border-radius: 0 0 0 100%;
+    left: 5%;
+    top: 52.5%;
+}
+.br {
+    background-color: #0808C1;
+    border-radius: 0 0 100% 0;
+    left: 52.5%;
+    top: 52.5%;
+}
+
+/* quadrant lights */
+
+.green-light {
+    background-color: #3DF43D;
+}
+.red-light {
+    background-color: #F61616;
+}
+.yellow-light {
+    background-color: #FCFC17;
+}
+.blue-light {
+    background-color: #006EFF;
+}
+/* game-ctrl */
+
+.game-ctrl-border {
+    position:absolute;
+        left: 25%;
+        top: 25%;
+    background-color: #222;
+    border-radius: 50%;
+    box-shadow: 0 0 50px #222;
+    height: 50%;
+    width: 50%;
+
+}
+
+.game-ctrl {
+    position: absolute;
+        left: 6%;
+        top: 6%;
+    background-color: #ccc;
+    border-radius: 50%;
+    box-shadow: inset 0 0 3px #000;
+    height: 88%;
+    width: 88%;
+    z-index: 1;
+}
+
+.game-ctrl * {
+    position: absolute;
+}
+
+ /* labels */
+
+.title {
+    color: #000;
+    font: 10vw Impact, sans-serif;
+    left: 11%;
+    top: 15%;
+}
+.label {
+    color: #000;
+    font-size: 1.5vw;
+}
+.label-round, .label-start, .label-strict {
+    top: 65%;
+}
+.label-round {
+    left: 20%;
+}
+.label-start {
+    left: 53%;
+}
+.label-strict {
+    left: 73%;
+}
+.label-off, .label-on {
+    top: 78.5%;
+}
+.label-off {
+    left: 24%;
+}
+.label-on {
+    left: 67%;
+}
+
+/* screen */
+
+.screen {
+    background-color: #555;
+    border-radius: 5px;
+    box-shadow: 0 0 2px #000;
+    height: 13%;
+    left: 18%;
+    top: 50%;
+    width: 20%;
+}
+.screen-txt{
+    color: #BDBE9B;
+    font: 3.8vw Monospace;
+    right: 5%;
+}
+
+/* button borders */
+
+.btn-border {
+    background-color: #222;
+    box-shadow: 0 0 2px #000;
+    height: 10.4%;
+}
+.border-start, .border-strict {
+    position: absolute;
+        top: 52.6%;
+    border-radius: 100%;
+    width: 10.4%;
+}
+.border-start {
+    left: 54%;
+}
+.border-strict {
+    left: 75%;
+}
+.border-on-off {
+    border-radius: 10%;
+    left: 35%;
+    top: 76%;
+    width: 30%;
+}
+
+/* buttons */
+
+.btn-start, .btn-strict{
+    border: none;
+    border-radius: 100%;
+    box-shadow: inset 0 0 1px #666;
+    height: 65% !important;
+    left: 17.5%;
+    top: 17.5%;
+    width: 65% !important;
+}
+.btn-start {
+    background-color: #f00;
+}
+.btn-start:active {
+    box-shadow: inset 0 0 8px #666;
+}
+.btn-strict {
+    background-color: #ff0;
+}
+.btn-off, .btn-on{
+    border: none;
+    box-shadow: inset 0 0 2px #222;
+    height: 65% !important;
+    padding: 0;
+    top: 15%;
+    width: 40% !important;
+    background-color: #333;
+}
+.btn-off{
+    left: 10%;
+}
+.btn-on{
+    left: 50%;
+}
+.btn-grey {
+    background-color: #8A96B6;
+}
+.btn-shadow {
+    box-shadow: inset 0 0 8px #666;
+}
+
+/*instructions*/
+
+.instructions {
+    color: #ff0000;
+    font: 40px Arial;
+    margin: 60px auto 90px auto;
+    text-align: center;
+    width: 80%;
+}
+
+.rules {
+    font: 30px Arial;
+    color: #342356;
+    margin: auto 10%;
+    width: 80%;
+}
+
+/*----------media----------*/
+
+@media screen and (max-width: 340px) {
+    .container {
+        width: 320px;
+    }
+    .title {
+        font: 42px Impact, sans-serif;
+    }
+}
+
+@media screen and (max-width: 430px) {
+    .screen-txt{
+        font: 3.8vw Monospace;
+        top: 10%;
+    }
+    .label {
+        font-size: 9px;
+    }
+    .label-round {
+        left: 18%;
+    }
+    .label-start {
+        left: 51%;
+    }
+    .label-strict {
+        left: 72%;
+    }
+    .label-off {
+        left: 22%;
+    }
+}
+
+@media screen and (min-width: 340px) and (max-width: 570px) {
+    .container {
+        min-width: 320px;
+        width: 100%;
+    }
+    .title {
+        font: 12.5vw Impact, sans-serif;
+    }
+}
+
+@media screen and (min-width: 430px) and (max-width: 570px) {
+    .title{
+        font: 12.5vw Impact, sans-serif;
+    }
+    .label {
+        font-size: 2.2vw;
+    }
+    .screen-txt{
+        font-size: 4.5vw;
+    }
+}
+
+@media screen and (min-width: 930px) {
+    .container {
+        margin-top: 93px;
+        width: 740px;
+    }
+    .title{
+        font: 95px Impact, sans-serif;
+    }
+    .label {
+        font-size: 15px;
+    }
+    .screen-txt{
+        font-size: 35px;
+    }
+}
